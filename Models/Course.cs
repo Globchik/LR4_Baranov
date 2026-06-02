@@ -1,21 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace LR4_Baranov.Models
+namespace LR4_Baranov.Models;
+
+[Table("courses")]
+public partial class Course
 {
-    [Table("courses")]
-    public class Course
-    {
-        [Key]
-        [Column("course_id")]
-        public int CourseId { get; set; }
+    [Key]
+    [Column("course_id")]
+    public int CourseId { get; set; }
 
-        [Column("course_name"), MaxLength(150)]
-        public string CourseName { get; set; } = string.Empty;
+    [Column("course_name")]
+    [StringLength(150)]
+    public string CourseName { get; set; } = null!;
 
-        [Column("credits")]
-        public int Credits { get; set; }
+    [Column("credits")]
+    public int Credits { get; set; }
 
-        public ICollection<Class> Classes { get; set; } = new List<Class>();
-    }
+    [InverseProperty("Course")]
+    public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 }

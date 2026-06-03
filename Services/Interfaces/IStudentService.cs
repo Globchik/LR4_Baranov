@@ -2,5 +2,8 @@ using LR4_Baranov.Models;
 
 namespace LR4_Baranov.Services.Interfaces
 {
-    public interface IStudentService : IBaseService<Student> { }
+    public interface IStudentService : IBaseService<Student>
+    {
+        Task<Student?> GetStudentWithGradesAsync(int id);
+    }
 }

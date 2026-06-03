@@ -3,6 +3,7 @@ using LR4_Baranov.Models;
 using LR4_Baranov.Services;
 using LR4_Baranov.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace LR4_Baranov
 {
@@ -24,7 +25,12 @@ namespace LR4_Baranov
             builder.Services.AddScoped<IClassService, ClassService>();
             builder.Services.AddScoped<IGradeService, GradeService>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+
             builder.Services.AddOpenApi();
 
             var app = builder.Build();

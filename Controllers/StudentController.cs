@@ -16,7 +16,7 @@ namespace LR4_Baranov.Controllers
         }
 
         [HttpGet("{id}/grades")]
-        public async Task<ActionResult<Student>> GetStudentWithGrades(int id)
+        public async Task<IActionResult> GetStudentWithGrades(int id)
         {
             var student = await studentService.GetStudentWithGradesAsync(id);
 

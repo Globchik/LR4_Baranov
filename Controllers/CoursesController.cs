@@ -16,7 +16,7 @@ namespace LR4_Baranov.Controllers
         }
 
         [HttpGet("{id}/classes")]
-        public async Task<ActionResult<Course>> GetCourseWithClasses(int id)
+        public async Task<IActionResult> GetCourseWithClasses(int id)
         {
             var course = await courseService.GetCourseWithClassesAsync(id);
 

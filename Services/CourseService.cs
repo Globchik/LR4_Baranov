@@ -7,13 +7,24 @@ namespace LR4_Baranov.Services
     public class CourseService : BaseService<Course>, ICourseService
     {
         public CourseService(UniversityDbContext context) : base(context) { }
-        public async Task<Course?> GetCourseWithClassesAsync(int id)
+        public async Task<object?> GetCourseWithClassesAsync(int id)
         {
             return await dbSet
-                .Include(c => c.Classes)
-                    .ThenInclude(cl => cl.Teacher)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.CourseId == id);
+                .Where(c => c.CourseId == id)
+                .Select(c => new
+                {
+                    c.CourseId,
+                    c.CourseName,
+                    c.Credits,
+                    Classes = c.Classes.Select(cl => new
+                    {
+                        cl.ClassId,
+                        cl.Semester,
+                        cl.ScheduleInfo,
+                        TeacherName = cl.Teacher != null ? cl.Teacher.FirstName + " " + cl.Teacher.LastName : "Unassigned"
+                    })
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -16,14 +16,14 @@ namespace LR4_Baranov.Controllers
         }
 
         [HttpGet("details")]
-        public async Task<ActionResult<IEnumerable<Class>>> GetAllClassesWithDetails()
+        public async Task<IActionResult> GetAllClassesWithDetails()
         {
             var classes = await classService.GetAllClassesWithDetailsAsync();
             return Ok(classes);
         }
 
         [HttpGet("{id}/details")]
-        public async Task<ActionResult<Class>> GetClassWithDetails(int id)
+        public async Task<IActionResult> GetClassWithDetails(int id)
         {
             var classEntity = await classService.GetClassWithDetailsAsync(id);
 

@@ -25,11 +25,7 @@ namespace LR4_Baranov
             builder.Services.AddScoped<IClassService, ClassService>();
             builder.Services.AddScoped<IGradeService, GradeService>();
 
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
+            builder.Services.AddControllers();
 
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

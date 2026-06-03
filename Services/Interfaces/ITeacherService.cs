@@ -4,6 +4,6 @@ namespace LR4_Baranov.Services.Interfaces
 {
     public interface ITeacherService : IBaseService<Teacher>
     {
-        Task<Teacher?> GetTeacherWithClassesAsync(int id);
+        Task<object?> GetTeacherWithClassesAsync(int id);
     }
 }

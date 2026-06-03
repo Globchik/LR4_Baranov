@@ -7,13 +7,23 @@ namespace LR4_Baranov.Services
     public class TeacherService : BaseService<Teacher>, ITeacherService
     {
         public TeacherService(UniversityDbContext context) : base(context) { }
-        public async Task<Teacher?> GetTeacherWithClassesAsync(int id)
+        public async Task<object?> GetTeacherWithClassesAsync(int id)
         {
             return await dbSet
-                .Include(t => t.Classes)
-                    .ThenInclude(c => c.Course)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.TeacherId == id);
+                .Where(t => t.TeacherId == id)
+                .Select(t => new
+                {
+                    t.TeacherId,
+                    t.FirstName,
+                    t.LastName,
+                    Classes = t.Classes.Select(c => new
+                    {
+                        c.ClassId,
+                        c.Semester,
+                        CourseName = c.Course.CourseName
+                    })
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

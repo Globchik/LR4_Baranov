@@ -1,4 +1,9 @@
 
+using LR4_Baranov.Models;
+using LR4_Baranov.Services;
+using LR4_Baranov.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace LR4_Baranov
 {
     public class Program
@@ -7,15 +12,23 @@ namespace LR4_Baranov
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<UniversityDbContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), null));
+
+            builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ITeacherService, TeacherService>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<IClassService, ClassService>();
+            builder.Services.AddScoped<IGradeService, GradeService>();
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
